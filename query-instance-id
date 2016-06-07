@@ -1,0 +1,23 @@
+#!/bin/sh
+
+service_name=$1
+
+usage="query-instance-id <service_name>"
+
+if [ -z $service_name ]
+then
+  echo $usage
+  exit 1
+fi
+
+if [ ! -f spot-requests/${service_name} ]
+then
+  echo service_name ${service_name} was not found in spot-requests dir.
+  exit 1
+fi
+
+spot_instance_request_id=`cat spot-requests/${service_name}`
+aws ec2 describe-spot-instance-requests \
+ --region us-west-1 \
+ --spot-instance-request-ids $spot_instance_request_id \
+ |jq -r .SpotInstanceRequests[].InstanceId

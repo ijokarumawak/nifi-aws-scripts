@@ -1,0 +1,28 @@
+#!/bin/sh
+
+service_name=$1
+
+if [ -z $service_name ]
+then
+  echo "usage: attach-volumes <service_name>"
+  exit 1
+fi
+
+# convert a.nifi to nifi, squid to squid, removing prefix.
+mount_point=`echo $service_name |sed 's/^[^\.]*\.//'`
+
+i=0
+for instance_id in `./query-instance-id-by-sg $service_name`
+do
+  volume_id=`grep ${i}.${service_name} volumes |awk '{print $2}'`
+  if [ -z $volume_id ]
+  then
+    echo "Volume ID for ${i}.${service_name} was not found."
+    exit 1
+  fi
+
+  ./attach-volume $volume_id $instance_id
+  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ec2-user@${i}.${service_name}.aws.mine "sudo mkdir -p /${mount_point}; sudo mount /dev/xvdh /${mount_point}"
+
+  i=`expr $i + 1`
+done

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+volume_id=$1
+instance_id=$2
+
+if [ -z $volume_id ] || [ -z $instance_id ]
+then
+  echo "usage: attach-volume <volume_id> <instance-id>"
+  exit 1
+fi
+
+aws ec2 attach-volume \
+ --region us-west-1 \
+ --volume-id ${volume_id} \
+ --instance-id ${instance_id} \
+ --device xvdh
+

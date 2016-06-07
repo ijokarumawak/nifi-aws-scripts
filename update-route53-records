@@ -1,0 +1,29 @@
+#!/bin/sh
+
+IFS=$'\n'
+for l in `./generate-hosts-internal`
+do
+  service_ip="$(echo ${l} |awk '{print $1}')"
+  service_name="$(echo ${l} |awk '{print $2}')"
+  resource_record="$(cat route53/change-resource-record.json |sed "s/SERVICE_NAME/${service_name}/" |sed "s/SERVICE_IP/${service_ip}/")"
+  if [ -z "${resource_records}" ]
+  then
+    resource_records="${resource_record}"
+  else
+    resource_records="${resource_records},\n${resource_record}"
+  fi
+done
+
+update_json="$(cat << EOF
+{
+  "Comment": "Update service resource records.",
+  "Changes": [
+${resource_records}
+  ]
+}
+EOF)"
+
+aws route53 change-resource-record-sets \
+  --hosted-zone-id `cat route53/hosted-zone-id` \
+ --change-batch "$(echo "${update_json}")"
+

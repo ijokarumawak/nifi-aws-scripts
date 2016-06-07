@@ -1,0 +1,19 @@
+#!/bin/sh
+
+service_name=$1
+
+usage="query-instance-id-by-sg <service_name>"
+
+if [ -z $service_name ]
+then
+  echo $usage
+  exit 1
+fi
+
+security_group_id=`grep ${service_name} security-groups |awk '{print $2}'`
+aws ec2 describe-spot-instance-requests \
+ --region us-west-1 \
+ |jq -r ".SpotInstanceRequests[] | select(\
+ (.LaunchSpecification.SecurityGroups[].GroupId | contains(\"${security_group_id}\"))\
+ and (.State == \"active\")
+ ) | .InstanceId" |sort

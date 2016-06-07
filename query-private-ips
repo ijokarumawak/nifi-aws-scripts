@@ -1,0 +1,18 @@
+#!/bin/sh
+
+service_name=$1
+
+usage="query-public-ips <service_name>"
+
+if [ -z $service_name ]
+then
+  echo $usage
+  exit 1
+fi
+
+for i in `./query-instance-id-by-sg ${service_name}`
+do
+  aws ec2 describe-instances --region us-west-1 --instance-ids $i \
+    |jq -r ".Reservations[].Instances[].PrivateIpAddress"
+done
+

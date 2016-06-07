@@ -1,0 +1,15 @@
+#!/bin/sh
+
+usage="terminate-all"
+
+echo "Do you want to terminate all spot instances? (y/n)"
+read confirm
+if [ "y" != $confirm ]
+then
+  exit 1
+fi
+
+for service_name in a.nifi b.nifi c.nifi proxy
+do
+  ./cancel-spot-request ${service_name}
+done

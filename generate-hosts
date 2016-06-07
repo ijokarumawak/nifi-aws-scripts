@@ -1,0 +1,11 @@
+#!/bin/sh
+
+for service_name in a.nifi b.nifi c.nifi d.nifi proxy
+do
+  i=0
+  for public_ip in `./query-public-ips ${service_name}`
+  do
+    echo "${public_ip}\t${i}.${service_name}.aws.mine"
+    i=`expr $i + 1`
+  done
+done

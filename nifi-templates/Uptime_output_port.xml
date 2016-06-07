@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<template>
+    <description>Send uptime via Site-to-Site output port</description>
+    <name>Uptime output port</name>
+    <snippet>
+        <connections>
+            <id>8da69a2d-4698-43c1-9040-1fc48cdc7166</id>
+            <parentGroupId>4234070e-68d6-481e-86dc-577f402de654</parentGroupId>
+            <backPressureDataSizeThreshold>0 MB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>0</backPressureObjectThreshold>
+            <destination>
+                <groupId>4234070e-68d6-481e-86dc-577f402de654</groupId>
+                <id>1da7c2ed-becd-4610-bc6b-310b482d869d</id>
+                <type>OUTPUT_PORT</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>4234070e-68d6-481e-86dc-577f402de654</groupId>
+                <id>536d4a47-2cdf-43c0-9d55-e61313b53c6e</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>3bdcaca8-b746-4ab0-bbd7-5937f834a189</id>
+            <parentGroupId>4234070e-68d6-481e-86dc-577f402de654</parentGroupId>
+            <backPressureDataSizeThreshold>0 MB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>0</backPressureObjectThreshold>
+            <destination>
+                <groupId>4234070e-68d6-481e-86dc-577f402de654</groupId>
+                <id>58dd8bf1-7ea3-4d2c-b43f-156670de0963</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>4234070e-68d6-481e-86dc-577f402de654</groupId>
+                <id>2d7ed979-5c25-4ffa-978e-917303980466</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>85796eee-88c6-4407-a2d6-618ff62cc457</id>
+            <parentGroupId>4234070e-68d6-481e-86dc-577f402de654</parentGroupId>
+            <backPressureDataSizeThreshold>0 MB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>0</backPressureObjectThreshold>
+            <destination>
+                <groupId>4234070e-68d6-481e-86dc-577f402de654</groupId>
+                <id>536d4a47-2cdf-43c0-9d55-e61313b53c6e</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <name></name>
+            <selectedRelationships>original</selectedRelationships>
+            <source>
+                <groupId>4234070e-68d6-481e-86dc-577f402de654</groupId>
+                <id>58dd8bf1-7ea3-4d2c-b43f-156670de0963</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <outputPorts>
+            <id>1da7c2ed-becd-4610-bc6b-310b482d869d</id>
+            <parentGroupId>4234070e-68d6-481e-86dc-577f402de654</parentGroupId>
+            <position>
+                <x>1113.7008586424943</x>
+                <y>773.2866954675069</y>
+            </position>
+            <comments></comments>
+            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+            <name>uptime</name>
+            <state>RUNNING</state>
+            <transmitting>false</transmitting>
+            <type>OUTPUT_PORT</type>
+        </outputPorts>
+        <processors>
+            <id>58dd8bf1-7ea3-4d2c-b43f-156670de0963</id>
+            <parentGroupId>4234070e-68d6-481e-86dc-577f402de654</parentGroupId>
+            <position>
+                <x>643.3182997735449</x>
+                <y>439.4979449581958</y>
+            </position>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <defaultConcurrentTasks>
+                    <entry>
+                        <key>TIMER_DRIVEN</key>
+                        <value>1</value>
+                    </entry>
+                    <entry>
+                        <key>EVENT_DRIVEN</key>
+                        <value>0</value>
+                    </entry>
+                    <entry>
+                        <key>CRON_DRIVEN</key>
+                        <value>1</value>
+                    </entry>
+                </defaultConcurrentTasks>
+                <defaultSchedulingPeriod>
+                    <entry>
+                        <key>TIMER_DRIVEN</key>
+                        <value>0 sec</value>
+                    </entry>
+                    <entry>
+                        <key>CRON_DRIVEN</key>
+                        <value>* * * * * ?</value>
+                    </entry>
+                </defaultSchedulingPeriod>
+                <descriptors>
+                    <entry>
+                        <key>Command Arguments</key>
+                        <value>
+                            <description>The arguments to supply to the executable delimited by the ';' character.
+                            </description>
+                            <displayName>Command Arguments</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Command Arguments</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>true</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Command Path</key>
+                        <value>
+                            <description>Specifies the command to be executed; if just the name of an executable is
+                                provided, it must be in the user's environment PATH.
+                            </description>
+                            <displayName>Command Path</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Command Path</name>
+                            <required>true</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>true</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Ignore STDIN</key>
+                        <value>
+                            <allowableValues>
+                                <displayName>true</displayName>
+                                <value>true</value>
+                            </allowableValues>
+                            <allowableValues>
+                                <displayName>false</displayName>
+                                <value>false</value>
+                            </allowableValues>
+                            <defaultValue>false</defaultValue>
+                            <description>If true, the contents of the incoming flowfile will not be passed to the
+                                executing command
+                            </description>
+                            <displayName>Ignore STDIN</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Ignore STDIN</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Working Directory</key>
+                        <value>
+                            <description>The directory to use as the current working directory when executing the
+                                command
+                            </description>
+                            <displayName>Working Directory</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Working Directory</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>true</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Argument Delimiter</key>
+                        <value>
+                            <defaultValue>;</defaultValue>
+                            <description>Delimiter to use to separate arguments for a command [default: ;]. Must be a
+                                single character
+                            </description>
+                            <displayName>Argument Delimiter</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Argument Delimiter</name>
+                            <required>true</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Output Destination Attribute</key>
+                        <value>
+                            <description>If set, the output of the stream command will be put into an attribute of the
+                                original FlowFile instead of a separate FlowFile. There will no longer be a relationship
+                                for 'output stream'. The value of this property will be the key for the output
+                                attribute.
+                            </description>
+                            <displayName>Output Destination Attribute</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Output Destination Attribute</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Max Attribute Length</key>
+                        <value>
+                            <defaultValue>256</defaultValue>
+                            <description>If routing the output of the stream command to an attribute, the number of
+                                characters put to the attribute value will be at most this amount. This is important
+                                because attributes are held in memory and large attributes will quickly cause out of
+                                memory issues. If the output goes longer than this value, it will truncated to fit.
+                                Consider making this smaller if able.
+                            </description>
+                            <displayName>Max Attribute Length</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Max Attribute Length</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                </descriptors>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Command Arguments</key>
+                    </entry>
+                    <entry>
+                        <key>Command Path</key>
+                        <value>hostname</value>
+                    </entry>
+                    <entry>
+                        <key>Ignore STDIN</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>Working Directory</key>
+                    </entry>
+                    <entry>
+                        <key>Argument Delimiter</key>
+                        <value>;</value>
+                    </entry>
+                    <entry>
+                        <key>Output Destination Attribute</key>
+                        <value>hostname</value>
+                    </entry>
+                    <entry>
+                        <key>Max Attribute Length</key>
+                        <value>256</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>Add hostname attribute</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <description>FlowFiles that were successfully processed</description>
+                <name>original</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <supportsEventDriven>true</supportsEventDriven>
+            <supportsParallelProcessing>true</supportsParallelProcessing>
+            <type>org.apache.nifi.processors.standard.ExecuteStreamCommand</type>
+        </processors>
+        <processors>
+            <id>2d7ed979-5c25-4ffa-978e-917303980466</id>
+            <parentGroupId>4234070e-68d6-481e-86dc-577f402de654</parentGroupId>
+            <position>
+                <x>947.2873114535223</x>
+                <y>163.42471817899116</y>
+            </position>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <defaultConcurrentTasks>
+                    <entry>
+                        <key>TIMER_DRIVEN</key>
+                        <value>1</value>
+                    </entry>
+                    <entry>
+                        <key>EVENT_DRIVEN</key>
+                        <value>0</value>
+                    </entry>
+                    <entry>
+                        <key>CRON_DRIVEN</key>
+                        <value>1</value>
+                    </entry>
+                </defaultConcurrentTasks>
+                <defaultSchedulingPeriod>
+                    <entry>
+                        <key>TIMER_DRIVEN</key>
+                        <value>0 sec</value>
+                    </entry>
+                    <entry>
+                        <key>CRON_DRIVEN</key>
+                        <value>* * * * * ?</value>
+                    </entry>
+                </defaultSchedulingPeriod>
+                <descriptors>
+                    <entry>
+                        <key>Command</key>
+                        <value>
+                            <description>Specifies the command to be executed; if just the name of an executable is
+                                provided, it must be in the user's environment PATH.
+                            </description>
+                            <displayName>Command</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Command</name>
+                            <required>true</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Command Arguments</key>
+                        <value>
+                            <description>The arguments to supply to the executable delimited by white space. White space
+                                can be escaped by enclosing it in double-quotes.
+                            </description>
+                            <displayName>Command Arguments</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Command Arguments</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Batch Duration</key>
+                        <value>
+                            <description>If the process is expected to be long-running and produce textual output, a
+                                batch duration can be specified so that the output will be captured for this amount of
+                                time and a FlowFile will then be sent out with the results and a new FlowFile will be
+                                started, rather than waiting for the process to finish before sending out the results
+                            </description>
+                            <displayName>Batch Duration</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Batch Duration</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Redirect Error Stream</key>
+                        <value>
+                            <allowableValues>
+                                <displayName>true</displayName>
+                                <value>true</value>
+                            </allowableValues>
+                            <allowableValues>
+                                <displayName>false</displayName>
+                                <value>false</value>
+                            </allowableValues>
+                            <defaultValue>false</defaultValue>
+                            <description>If true will redirect any error stream output of the process to the output
+                                stream. This is particularly helpful for processes which write extensively to the error
+                                stream or for troubleshooting.
+                            </description>
+                            <displayName>Redirect Error Stream</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Redirect Error Stream</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Argument Delimiter</key>
+                        <value>
+                            <defaultValue></defaultValue>
+                            <description>Delimiter to use to separate arguments for a command [default: space]. Must be
+                                a single character.
+                            </description>
+                            <displayName>Argument Delimiter</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Argument Delimiter</name>
+                            <required>true</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                </descriptors>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Command</key>
+                        <value>uptime</value>
+                    </entry>
+                    <entry>
+                        <key>Command Arguments</key>
+                    </entry>
+                    <entry>
+                        <key>Batch Duration</key>
+                    </entry>
+                    <entry>
+                        <key>Redirect Error Stream</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>Argument Delimiter</key>
+                        <value></value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>10 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>Uptime</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <description>All created FlowFiles are routed to this relationship</description>
+                <name>success</name>
+            </relationships>
+            <state>STOPPED</state>
+            <style/>
+            <supportsEventDriven>false</supportsEventDriven>
+            <supportsParallelProcessing>true</supportsParallelProcessing>
+            <type>org.apache.nifi.processors.standard.ExecuteProcess</type>
+        </processors>
+        <processors>
+            <id>536d4a47-2cdf-43c0-9d55-e61313b53c6e</id>
+            <parentGroupId>4234070e-68d6-481e-86dc-577f402de654</parentGroupId>
+            <position>
+                <x>1344.5633797434855</x>
+                <y>440.4598627461464</y>
+            </position>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <defaultConcurrentTasks>
+                    <entry>
+                        <key>TIMER_DRIVEN</key>
+                        <value>1</value>
+                    </entry>
+                    <entry>
+                        <key>EVENT_DRIVEN</key>
+                        <value>0</value>
+                    </entry>
+                    <entry>
+                        <key>CRON_DRIVEN</key>
+                        <value>1</value>
+                    </entry>
+                </defaultConcurrentTasks>
+                <defaultSchedulingPeriod>
+                    <entry>
+                        <key>TIMER_DRIVEN</key>
+                        <value>0 sec</value>
+                    </entry>
+                    <entry>
+                        <key>CRON_DRIVEN</key>
+                        <value>* * * * * ?</value>
+                    </entry>
+                </defaultSchedulingPeriod>
+                <descriptors>
+                    <entry>
+                        <key>Log Level</key>
+                        <value>
+                            <allowableValues>
+                                <displayName>trace</displayName>
+                                <value>trace</value>
+                            </allowableValues>
+                            <allowableValues>
+                                <displayName>debug</displayName>
+                                <value>debug</value>
+                            </allowableValues>
+                            <allowableValues>
+                                <displayName>info</displayName>
+                                <value>info</value>
+                            </allowableValues>
+                            <allowableValues>
+                                <displayName>warn</displayName>
+                                <value>warn</value>
+                            </allowableValues>
+                            <allowableValues>
+                                <displayName>error</displayName>
+                                <value>error</value>
+                            </allowableValues>
+                            <defaultValue>info</defaultValue>
+                            <description>The Log Level to use when logging the Attributes</description>
+                            <displayName>Log Level</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Log Level</name>
+                            <required>true</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Log Payload</key>
+                        <value>
+                            <allowableValues>
+                                <displayName>true</displayName>
+                                <value>true</value>
+                            </allowableValues>
+                            <allowableValues>
+                                <displayName>false</displayName>
+                                <value>false</value>
+                            </allowableValues>
+                            <defaultValue>false</defaultValue>
+                            <description>If true, the FlowFile's payload will be logged, in addition to its attributes;
+                                otherwise, just the Attributes will be logged.
+                            </description>
+                            <displayName>Log Payload</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Log Payload</name>
+                            <required>true</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Log</key>
+                        <value>
+                            <description>A comma-separated list of Attributes to Log. If not specified, all attributes
+                                will be logged.
+                            </description>
+                            <displayName>Attributes to Log</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Attributes to Log</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
+                        <value>
+                            <description>A comma-separated list of Attributes to ignore. If not specified, no attributes
+                                will be ignored.
+                            </description>
+                            <displayName>Attributes to Ignore</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Attributes to Ignore</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>false</supportsEl>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Log prefix</key>
+                        <value>
+                            <description>Log prefix appended to the log lines. It helps to distinguish the output of
+                                multiple LogAttribute processors.
+                            </description>
+                            <displayName>Log prefix</displayName>
+                            <dynamic>false</dynamic>
+                            <name>Log prefix</name>
+                            <required>false</required>
+                            <sensitive>false</sensitive>
+                            <supportsEl>true</supportsEl>
+                        </value>
+                    </entry>
+                </descriptors>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Log Level</key>
+                        <value>warn</value>
+                    </entry>
+                    <entry>
+                        <key>Log Payload</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Log</key>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Ignore</key>
+                    </entry>
+                    <entry>
+                        <key>Log prefix</key>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <name>LogAttribute</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <description>All FlowFiles are routed to this relationship</description>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <supportsEventDriven>true</supportsEventDriven>
+            <supportsParallelProcessing>true</supportsParallelProcessing>
+            <type>org.apache.nifi.processors.standard.LogAttribute</type>
+        </processors>
+    </snippet>
+    <timestamp>05/24/2016 02:08:09 UTC</timestamp>
+</template>

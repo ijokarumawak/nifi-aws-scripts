@@ -1,0 +1,47 @@
+#!/bin/sh
+
+service_name=$1
+
+usage="request-spot-instance <service_name>"
+
+case $service_name in
+  a.nifi)
+    instance_count=1
+    ;;
+  b.nifi)
+    instance_count=1
+    ;;
+  c.nifi)
+    instance_count=3
+    ;;
+  d.nifi)
+    instance_count=3
+    ;;
+  apache)
+    instance_count=1
+    ;;
+  apache24)
+    instance_count=1
+    ;;
+  squid)
+    instance_count=1
+    ;;
+  proxy)
+    instance_count=1
+    ;;
+esac
+
+if [ -z $service_name ] || [ -z $instance_count ] || [ $instance_count -le 0 ]
+then
+  echo $usage
+  exit 1
+fi
+
+aws ec2 request-spot-instances \
+ --region us-west-1 \
+ --launch-specification file://spot-request-specifications/${service_name}.json \
+ --availability-zone-group "us-west-1c" \
+ --instance-count ${instance_count} \
+ --spot-price "0.025" \
+ |jq -r .SpotInstanceRequests[].SpotInstanceRequestId > spot-requests/${service_name}
+

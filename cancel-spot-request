@@ -1,0 +1,31 @@
+#!/bin/sh
+
+service_name=$1
+
+usage="cancel-spot-request <service_name>"
+
+if [ -z $service_name ]
+then
+  echo $usage
+  exit 1
+fi
+
+request_file=spot-requests/${service_name}
+if [ ! -f $request_file ]
+then
+  echo "${request_file} doesn't exist."
+  exit 1
+fi
+
+instance_ids=`./query-instance-id-by-sg ${service_name}`
+aws ec2 terminate-instances \
+  --region us-west-1 \
+  --instance-ids ${instance_ids} \
+  --no-dry-run
+
+requested_spot_ids=`cat ${request_file}`
+aws ec2 cancel-spot-instance-requests \
+ --region us-west-1 \
+ --spot-instance-request-ids ${requested_spot_ids} \
+ --no-dry-run
+

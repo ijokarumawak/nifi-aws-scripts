@@ -1,0 +1,35 @@
+#!/bin/sh
+
+
+service_name=$1
+
+usage="deploy-nifi-lib <service_name>"
+if [ -z $service_name ]
+then
+  echo $usage
+  exit 1
+fi
+
+case $service_name in
+  a.nifi)
+    instance_count=1
+    ;;
+  b.nifi)
+    instance_count=1
+    ;;
+  c.nifi)
+    instance_count=3
+    ;;
+  d.nifi)
+    instance_count=3
+    ;;
+esac
+
+max_i=`expr $instance_count - 1`
+for i in `seq 0 $max_i`
+do
+  rsync -avzh \
+    -e "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
+    $NIFI_SS_HOME/lib/ ec2-user@${i}.${service_name}.aws.mine:/nifi/nifi-1.0.0-SNAPSHOT/lib
+done
+

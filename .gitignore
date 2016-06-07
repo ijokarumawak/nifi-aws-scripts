@@ -1,0 +1,8 @@
+.DS_Store
+*.swp
+spot-requests
+spot-request-specifications
+security-groups
+volumes
+route53/hosted-zone-id
+keys
