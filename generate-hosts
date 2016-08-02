@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for service_name in a.nifi b.nifi c.nifi d.nifi proxy
+for service_name in a.nifi b.nifi c.nifi d.nifi p.nifi master proxy
 do
   i=0
   for public_ip in `./query-public-ips ${service_name}`

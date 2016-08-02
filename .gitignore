@@ -2,6 +2,7 @@
 *.swp
 spot-requests
 spot-request-specifications
+spot-fleet-specifications/
 security-groups
 volumes
 route53/hosted-zone-id

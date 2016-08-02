@@ -1,0 +1,15 @@
+#!/bin/sh
+
+service_name=$1
+
+usage="request-spot-fleet <service_name>"
+
+if [ -z $service_name ] 
+then
+  echo $usage
+  exit 1
+fi
+
+aws ec2 request-spot-fleet \
+  --region us-west-1 \
+  --spot-fleet-request-config file://spot-fleet-specifications/${service_name}.json 
