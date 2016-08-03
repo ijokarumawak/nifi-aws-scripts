@@ -13,7 +13,9 @@ fi
 security_group_id=`grep ${service_name} security-groups |awk '{print $2}'`
 aws ec2 describe-spot-instance-requests \
  --region us-west-1 \
- |jq -r ".SpotInstanceRequests[] | select(\
+ |jq -rc ".SpotInstanceRequests[] | select(\
  (.LaunchSpecification.SecurityGroups[].GroupId | contains(\"${security_group_id}\"))\
  and (.State == \"active\")
- ) | .InstanceId" |sort
+ ) | {CreateTime: .CreateTime, InstanceId: .InstanceId}" \
+ |sort \
+ |jq -r ".InstanceId"
