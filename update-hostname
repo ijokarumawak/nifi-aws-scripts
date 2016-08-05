@@ -12,7 +12,8 @@ then
   exit 1
 fi
 
+
 ./ssh $instance_name "sudo hostname $instance_name.aws.mine" \
-&& ./ssh $instance_name 'cat /opt/nifi/conf/nifi.properties.template |sed "s/REPLACE_WITH_HOSTNAME/$(hostname)/g" > /opt/nifi/conf/nifi.properties' \
+&& ./ssh $instance_name 'cat /opt/nifi/conf/nifi.properties.template |sed "s/REPLACE_WITH_HOSTNAME/$(hostname)/g" |sed "s/REPLACE_WITH_CLUSTER_NAME/$(hostname |sed s/^[^.].//)/g" > /opt/nifi/conf/nifi.properties' \
 && ./ssh $instance_name 'cat /etc/ganglia/gmond.conf.template |sed "s/REPLACE_WITH_HOSTNAME/$(hostname)/g" > /etc/ganglia/gmond.conf' \
 && ./ssh $instance_name 'sudo service gmond restart'

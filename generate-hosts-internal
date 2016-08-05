@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for service_name in a.nifi b.nifi c.nifi d.nifi p.nifi master proxy
+for service_name in `cat security-groups |awk '{print $1}'`
 do
   i=0
   for public_ip in `./query-private-ips ${service_name}`
