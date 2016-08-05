@@ -137,129 +137,177 @@ var execBasedOnQueuedFlowFileCount = function(nifiApi, maxAllowedQueued, callbac
 }
 
 /*
+ * Test logic.
+ */
+var executePushTest = function(generatorConfig, increaseLoad) {
+  var cooldownSec = 10;
+  var queuedFlowFilesCheckIntervalSec = 10;
+  var flowFilesPerSec = Math.floor(generatorConfig.batchSize / generatorConfig.intervalSec);
+  var expectedThroughputKb = flowFilesPerSec * generatorConfig.fileSizeKb;
+  var start = new Date();
+  var testDurationSec = 60;
+  // Allow keeping up to average incoming flow-files per sec for the half of testDurationSec.
+  // If queued flow-file count exceeds this, test will terminate.
+  var maxAllowedQueuedFlowFilesCount = Math.floor(flowFilesPerSec * (testDurationSec / 2));
+  
+  console.log('Stopping generator.');
+  getProcessorIdByName(nifiApiP, 'push-data-generator', (err, processorId) => {
+  
+    var generatorId = processorId;
+  
+    var queuedFlowFilesCheck = function() {
+  
+      var terminateTest = function(callback) {
+        console.log('Stopping generator.');
+        updateProcessorState(nifiApiP, generatorId, false, (err) => {
+          if (err) {
+            console.log('Failed to stop the generator.', err);
+            return;
+          }
+          console.log('Finished test.');
+          if (callback) {
+            callback();
+          }
+        });
+      }
+  
+      execBasedOnQueuedFlowFileCount(nifiApiP, maxAllowedQueuedFlowFilesCount, {onErr: (err) => {
+          console.log('Failed to get flow status from P.', err);
+  
+      }, onExceed: (countP) => {
+          console.log('Too many queued flow-files (' + countP + ') in NiFi P. Terminate the test.');
+          terminateTest();
+  
+      }, onLess: (countP) => {
+  
+        execBasedOnQueuedFlowFileCount(nifiApiQ, maxAllowedQueuedFlowFilesCount - countP, {onErr: (err) => {
+            console.log('Failed to get flow status from Q.', err);
+  
+        }, onExceed: (countQ) => {
+            console.log('Too many queued flow-files in NiFi P and Q (' + countP + ', ' + countQ + '). Terminate the test.');
+            terminateTest();
+  
+        }, onLess: (count) => {
+            // Check elapsed time.
+            var now = new Date();
+            var elapsedMillis = (now.getTime() - start.getTime());
+            console.log(Math.floor(elapsedMillis / 1000) + ',' + count);
+    
+            if (elapsedMillis > testDurationSec * 1000) {
+              console.log('Congratulations! The test have survived for ' + testDurationSec + ' sec. At expected throughput (kb/sec) :' + expectedThroughputKb);
+
+              var nextTest = function() {
+                // Wait until queued files are fully drained.
+                var waitUntilFullyDrained = function() {
+                  execBasedOnQueuedFlowFileCount(nifiApiP, 0, {onErr: (err) => {
+                      console.log('Failed to get flow status from P.', err);
+    
+                  }, onExceed: (countP) => {
+                      console.log(countP + ' queued flow-files remaining in NiFi P. Wait for a while.');
+                      setTimeout(waitUntilFullyDrained, 10000);
+
+                  }, onLess: (countP) => {
+                    console.log(countP + ' queued flow-files remaining in NiFi P. Checking Q..');
+
+                    var waitUntilFullyDrainedQ = function() {
+                      execBasedOnQueuedFlowFileCount(nifiApiQ, 0, {onErr: (err) => {
+                          console.log('Failed to get flow status from Q.', err);
+    
+                      }, onExceed: (countQ) => {
+                          console.log(countQ + ' queued flow-files remaining in NiFi Q. Wait for a while.');
+                          setTimeout(waitUntilFullyDrainedQ, 10000);
+
+                      }, onLess: (countQ) => {
+                        console.log(countQ + ' queued flow-files remaining in NiFi Q. Proceeding with the next test..');
+                        increaseLoad(generatorConfig);
+                        executePushTest(generatorConfig, increaseLoad);
+  
+                      }});
+                    }
+                    waitUntilFullyDrainedQ();
+
+                  }});
+                }
+                waitUntilFullyDrained();
+              }
+
+              terminateTest(nextTest);
+
+            } else {
+              setTimeout(queuedFlowFilesCheck, queuedFlowFilesCheckIntervalSec * 1000);
+            }
+        }});
+  
+      }});
+  
+    }
+  
+  
+    updateProcessorState(nifiApiP, generatorId, false, (err) => {
+      if (err) {
+        console.log('Failed to stop the generator.', err);
+        return;
+      }
+  
+      execBasedOnQueuedFlowFileCount(nifiApiP, 0, {onErr: (err) => {
+          console.log('Failed to get flow status from P.', err);
+  
+      }, onExceed: (count) => {
+          console.log('There are ' + count + ' flow-files remaining in NiFi P queue. Cannot start test until it becomes empty.');
+  
+      }, onLess: (count) => {
+  
+        execBasedOnQueuedFlowFileCount(nifiApiQ, 0, {onErr: (err) => {
+            console.log('Failed to get flow status from Q.', err);
+    
+        }, onExceed: (count) => {
+            console.log('There are ' + count + ' flow-files remaining in NiFi Q queue. Cannot start test until it becomes empty.');
+    
+        }, onLess: (count) => {
+          console.log('Updating generator config.', generatorConfig);
+          console.log('maxAllowedQueuedFlowFilesCount', maxAllowedQueuedFlowFilesCount);
+          updateProcessorConfig(nifiApiP, generatorId, (config) => {
+            config.schedulingPeriod = generatorConfig.intervalSec + 'sec';
+            config.properties['Batch Size'] = generatorConfig.batchSize;
+            config.properties['File Size'] = generatorConfig.fileSizeKb + 'kb';
+      
+          }, (err) => {
+            if (err) {
+              console.log('Failed to update the generator config.', err);
+              return;
+            }
+      
+            console.log('Waiting for ' + cooldownSec + ' sec to cooldown.');
+            setTimeout(() => {
+              console.log('Starting generator.');
+              updateProcessorState(nifiApiP, generatorId, true, (err) => {
+                if (err) {
+                  console.log('Failed to start the generator.', err);
+                  return;
+                }
+      
+                console.log('Checking how many flow-files are queued in every ' + queuedFlowFilesCheckIntervalSec + ' sec..');
+                queuedFlowFilesCheck();
+      
+              });
+            }, cooldownSec * 1000);
+          });
+        }});  
+      }});  
+    });
+  });
+}
+
+/*
  * Main logic.
  */
 
 var generatorConfig = {
   intervalSec: 1,
-  batchSize: 100,
-  fileSizeKb: 100
+  batchSize: 30000,
+  fileSizeKb: 1
 };
-var cooldownSec = 10;
-var queuedFlowFilesCheckIntervalSec = 10;
-var flowFilesPerSec = Math.floor(generatorConfig.batchSize / generatorConfig.intervalSec);
-var expectedThroughputKb = flowFilesPerSec * generatorConfig.fileSizeKb;
-var start = new Date();
-var testDurationSec = 60;
-// Allow keeping up to average incoming flow-files per sec for the half of testDurationSec.
-// If queued flow-file count exceeds this, test will terminate.
-var maxAllowedQueuedFlowFilesCount = Math.floor(flowFilesPerSec * (testDurationSec / 2));
-
-console.log('Stopping generator.');
-getProcessorIdByName(nifiApiP, 'push-data-generator', (err, processorId) => {
-
-  var generatorId = processorId;
-
-  var queuedFlowFilesCheck = function() {
-
-    var terminateTest = function() {
-      console.log('Stopping generator.');
-      updateProcessorState(nifiApiP, generatorId, false, (err) => {
-        if (err) {
-          console.log('Failed to stop the generator.', err);
-          return;
-        }
-        console.log('Finished test.');
-      });
-    }
-
-    execBasedOnQueuedFlowFileCount(nifiApiP, maxAllowedQueuedFlowFilesCount, {onErr: (err) => {
-        console.log('Failed to get flow status from P.', err);
-
-    }, onExceed: (countP) => {
-        console.log('Too many queued flow-files (' + countP + ') in NiFi P. Terminate the test.');
-        terminateTest();
-
-    }, onLess: (countP) => {
-
-      execBasedOnQueuedFlowFileCount(nifiApiQ, maxAllowedQueuedFlowFilesCount - countP, {onErr: (err) => {
-          console.log('Failed to get flow status from Q.', err);
-
-      }, onExceed: (countQ) => {
-          console.log('Too many queued flow-files in NiFi P and Q (' + countP + ', ' + countQ + '). Terminate the test.');
-          terminateTest();
-
-      }, onLess: (count) => {
-          // Check elapsed time.
-          var now = new Date();
-          var elapsedMillis = (now.getTime() - start.getTime());
-          console.log(Math.floor(elapsedMillis / 1000) + ',' + count);
-  
-          if (elapsedMillis > testDurationSec * 1000) {
-            console.log('Congratulations! The test have survived for ' + testDurationSec + ' sec. At expected throughput (kb/sec) :' + expectedThroughputKb);
-            terminateTest();
-
-          } else {
-            setTimeout(queuedFlowFilesCheck, queuedFlowFilesCheckIntervalSec * 1000);
-          }
-      }});
-
-    }});
-
-  }
-
-
-  updateProcessorState(nifiApiP, generatorId, false, (err) => {
-    if (err) {
-      console.log('Failed to stop the generator.', err);
-      return;
-    }
-
-    execBasedOnQueuedFlowFileCount(nifiApiP, 0, {onErr: (err) => {
-        console.log('Failed to get flow status from P.', err);
-
-    }, onExceed: (count) => {
-        console.log('There are ' + count + ' flow-files remaining in NiFi P queue. Cannot start test until it becomes empty.');
-
-    }, onLess: (count) => {
-
-      execBasedOnQueuedFlowFileCount(nifiApiQ, 0, {onErr: (err) => {
-          console.log('Failed to get flow status from Q.', err);
-  
-      }, onExceed: (count) => {
-          console.log('There are ' + count + ' flow-files remaining in NiFi Q queue. Cannot start test until it becomes empty.');
-  
-      }, onLess: (count) => {
-        console.log('Updating generator config.', generatorConfig);
-        console.log('maxAllowedQueuedFlowFilesCount', maxAllowedQueuedFlowFilesCount);
-        updateProcessorConfig(nifiApiP, generatorId, (config) => {
-          config.schedulingPeriod = generatorConfig.intervalSec + 'sec';
-          config.properties['Batch Size'] = generatorConfig.batchSize;
-          config.properties['File Size'] = generatorConfig.fileSizeKb + 'kb';
-    
-        }, (err) => {
-          if (err) {
-            console.log('Failed to update the generator config.', err);
-            return;
-          }
-    
-          console.log('Waiting for ' + cooldownSec + ' sec to cooldown.');
-          setTimeout(() => {
-            console.log('Starting generator.');
-            updateProcessorState(nifiApiP, generatorId, true, (err) => {
-              if (err) {
-                console.log('Failed to start the generator.', err);
-                return;
-              }
-    
-              console.log('Checking how many flow-files are queued every ' + queuedFlowFilesCheckIntervalSec + ' sec..');
-              queuedFlowFilesCheck();
-    
-            });
-          }, cooldownSec * 1000);
-        });
-      }});  
-    }});  
-  });
+executePushTest(generatorConfig, (config) => {
+  // Increase load.
+  config.batchSize = config.batchSize * 2;
 });
-
