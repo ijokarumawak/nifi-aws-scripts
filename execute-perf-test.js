@@ -30,6 +30,8 @@ var getProcessorIdByName = function(nifiApi, name, callback) {
     }
     if (res.statusCode == 200) {
       callback(null, JSON.parse(body).searchResultsDTO.processorResults[0].id);
+    } else {
+      callback(res);
     }
   });
 }
@@ -42,6 +44,8 @@ var getProcessor = function(nifiApi, uuid, callback) {
     }
     if (res.statusCode == 200) {
       callback(null, JSON.parse(body));
+    } else {
+      callback(res);
     }
   });
 }
@@ -60,7 +64,8 @@ var putProcessor = function(nifiApi, uuid, processor, callback) {
     if(debug) console.log(res.statusCode);
     if (res.statusCode == 200) {
       callback(null);
-      return;
+    } else {
+      callback(res);
     }
   });
 }
@@ -114,6 +119,8 @@ var getFlowStatus = function(nifiApi, callback) {
     }
     if (res.statusCode == 200) {
       callback(null, JSON.parse(body));
+    } else {
+      callback(res);
     }
   });
 }
@@ -142,7 +149,7 @@ var execBasedOnQueuedFlowFileCount = function(nifiApi, maxAllowedQueued, callbac
 var executePushTest = function(generatorConfig, increaseLoad) {
   var cooldownSec = 10;
   var queuedFlowFilesCheckIntervalSec = 10;
-  var flowFilesPerSec = Math.floor(generatorConfig.batchSize / generatorConfig.intervalSec);
+  var flowFilesPerSec = Math.floor(generatorConfig.batchSize / (generatorConfig.intervalMillis / 1000));
   var expectedThroughputKb = flowFilesPerSec * generatorConfig.fileSizeKb;
   var start = new Date();
   var testDurationSec = 60;
@@ -187,11 +194,11 @@ var executePushTest = function(generatorConfig, increaseLoad) {
             console.log('Too many queued flow-files in NiFi P and Q (' + countP + ', ' + countQ + '). Terminate the test.');
             terminateTest();
   
-        }, onLess: (count) => {
+        }, onLess: (countQ) => {
             // Check elapsed time.
             var now = new Date();
             var elapsedMillis = (now.getTime() - start.getTime());
-            console.log(Math.floor(elapsedMillis / 1000) + ',' + count);
+            console.log(Math.floor(elapsedMillis / 1000) + ',' + (countP + countQ));
     
             if (elapsedMillis > testDurationSec * 1000) {
               console.log('Congratulations! The test have survived for ' + testDurationSec + ' sec. At expected throughput (kb/sec) :' + expectedThroughputKb);
@@ -267,7 +274,7 @@ var executePushTest = function(generatorConfig, increaseLoad) {
           console.log('Updating generator config.', generatorConfig);
           console.log('maxAllowedQueuedFlowFilesCount', maxAllowedQueuedFlowFilesCount);
           updateProcessorConfig(nifiApiP, generatorId, (config) => {
-            config.schedulingPeriod = generatorConfig.intervalSec + 'sec';
+            config.schedulingPeriod = generatorConfig.intervalMillis + 'ms';
             config.properties['Batch Size'] = generatorConfig.batchSize;
             config.properties['File Size'] = generatorConfig.fileSizeKb + 'kb';
       
@@ -303,9 +310,9 @@ var executePushTest = function(generatorConfig, increaseLoad) {
  */
 
 var generatorConfig = {
-  intervalSec: 1,
-  batchSize: 30000,
-  fileSizeKb: 1
+  intervalMillis: 500,
+  batchSize: 10,
+  fileSizeKb: 1024
 };
 executePushTest(generatorConfig, (config) => {
   // Increase load.
