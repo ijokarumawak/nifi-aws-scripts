@@ -1,29 +1,80 @@
+var fs = require('fs');
+var path = require('path');
 var request = require('request');
 var debug = false;
 
 var showUsage = function() {
-  console.log('node execute-perf-test.js <cmd>');
+  console.log('node execute-perf-test.js <cmd:push/pull> <size:S/L>');
   process.exit(1);
 }
 
-if (process.argv.length < 3) showUsage();
+if (process.argv.length < 4) showUsage();
 
+var cmd = process.argv[2];
+var size = process.argv[3];
+
+
+function NiFiApi(http, https, certFile) {
+  this.isSecure = false;
+  this.cert = path.resolve(__dirname, certFile);
+  this.getApiRoot = function() {
+    return this.isSecure ? https : http;
+  }
+  this.request = function(options, callback) {
+
+    var o = {};
+    if (typeof(options) === 'string') {
+      // Only url is specified.
+      o.url = this.getApiRoot() + options;
+      o.method = 'GET';
+    } else {
+      // Initialize with the specified options.
+      for (k in options) {
+        o[k] = options[k];
+      }
+      o.url = this.getApiRoot() + options.url;
+    }
+
+    o.ca = fs.readFileSync(this.cert);
+
+    request(o, callback);
+  }
+}
+
+/*
+ * Environment dependent values.
+ */
+
+var clientCertFile = path.resolve(__dirname, 'keys/koji.aws.mine.crt');
+var clientKeyFile = path.resolve(__dirname, 'keys/koji.aws.mine.pem');
+
+var nifiApiP = new NiFiApi(
+    'http://0.p.nifi.aws.mine:8080/nifi-api',
+    'https://0.p.nifi.aws.mine:8443/nifi-api',
+    'keys/0.p.nifi.aws.mine.crt');
+nifiApiP.isSecure = true;
+
+var nifiApiQ = new NiFiApi(
+    'http://0.q.nifi.aws.mine:8080/nifi-api',
+    'https://0.q.nifi.aws.mine:8443/nifi-api',
+    'keys/0.q.nifi.aws.mine.crt');
+nifiApiQ.isSecure = true;
 
 /*
  * Define common functions.
  */
 
-var nifiApiP = 'http://0.p.nifi.aws.mine:8080/nifi-api';
-var nifiApiQ = 'http://0.q.nifi.aws.mine:8080/nifi-api';
 request = request.defaults({
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
-  }
+  },
+  cert: fs.readFileSync(clientCertFile),
+  key: fs.readFileSync(clientKeyFile)
 });
 
 var getProcessorIdByName = function(nifiApi, name, callback) {
-  request(nifiApi + '/flow/search-results?q=' + name, (err, res, body) => {
+  nifiApi.request('/flow/search-results?q=' + name, (err, res, body) => {
     if (err) {
       callback(err);
       return;
@@ -37,7 +88,7 @@ var getProcessorIdByName = function(nifiApi, name, callback) {
 }
 
 var getProcessor = function(nifiApi, uuid, callback) {
-  request(nifiApi + '/processors/' + uuid, (err, res, body) => {
+  nifiApi.request('/processors/' + uuid, (err, res, body) => {
     if (err) {
       callback(err);
       return;
@@ -52,8 +103,8 @@ var getProcessor = function(nifiApi, uuid, callback) {
 
 var putProcessor = function(nifiApi, uuid, processor, callback) {
   if (debug) console.log('going to put', processor);
-  request({
-    url: nifiApi + '/processors/' + uuid,
+  nifiApi.request({
+    url: '/processors/' + uuid,
     method: 'PUT',
     json: processor
   }, (err, res, body) => {
@@ -111,8 +162,23 @@ var updateProcessorConfig = function(nifiApi, uuid, updateConfig, callback) {
   });
 }
 
+var getClusterSummary = function(nifiApi, callback) {
+  nifiApi.request('/flow/cluster/summary', (err, res, body) => {
+    if (err) {
+      callback(err);
+      return;
+    }
+    if (res.statusCode == 200) {
+      console.log(body);
+      callback(null, JSON.parse(body));
+    } else {
+      callback(res);
+    }
+  });
+}
+
 var getFlowStatus = function(nifiApi, callback) {
-  request(nifiApi + '/flow/status', (err, res, body) => {
+  nifiApi.request('/flow/status', (err, res, body) => {
     if (err) {
       callback(err);
       return;
@@ -152,13 +218,14 @@ var executePushTest = function(generatorConfig, increaseLoad) {
   var flowFilesPerSec = Math.floor(generatorConfig.batchSize / (generatorConfig.intervalMillis / 1000));
   var expectedThroughputKb = flowFilesPerSec * generatorConfig.fileSizeKb;
   var start = new Date();
-  var testDurationSec = 60;
-  // Allow keeping up to average incoming flow-files per sec for the half of testDurationSec.
+  var testDurationSec = generatorConfig.testDurationSec;
+  // Allow keeping up to average incoming flow-files per sec for 10 sec.
   // If queued flow-file count exceeds this, test will terminate.
-  var maxAllowedQueuedFlowFilesCount = Math.floor(flowFilesPerSec * (testDurationSec / 2));
+  var expectedSecToBeTransferred = cmd == 'push' ? 10 : 30;
+  var maxAllowedQueuedFlowFilesCount = Math.floor(flowFilesPerSec * expectedSecToBeTransferred) * generatorConfig.clusterSummary.connectedNodeCount;
   
   console.log('Stopping generator.');
-  getProcessorIdByName(nifiApiP, 'push-data-generator', (err, processorId) => {
+  getProcessorIdByName(nifiApiP, generatorConfig.processorName, (err, processorId) => {
   
     var generatorId = processorId;
   
@@ -198,7 +265,7 @@ var executePushTest = function(generatorConfig, increaseLoad) {
             // Check elapsed time.
             var now = new Date();
             var elapsedMillis = (now.getTime() - start.getTime());
-            console.log(Math.floor(elapsedMillis / 1000) + ',' + (countP + countQ));
+            console.log(Math.floor(elapsedMillis / 1000) + ',' + countP + ',' + countQ);
     
             if (elapsedMillis > testDurationSec * 1000) {
               console.log('Congratulations! The test have survived for ' + testDurationSec + ' sec. At expected throughput (kb/sec) :' + expectedThroughputKb);
@@ -309,12 +376,42 @@ var executePushTest = function(generatorConfig, increaseLoad) {
  * Main logic.
  */
 
-var generatorConfig = {
-  intervalMillis: 500,
-  batchSize: 10,
-  fileSizeKb: 1024
+var generatorConfigs = {
+  S: {
+    intervalMillis: 100,
+    batchSize: 100,
+    fileSizeKb: 1,
+    testDurationSec: 60,
+    incrementBatchSize: 100,
+    incrementFileSizeKb: 0
+  },
+  L: {
+    intervalMillis: 1000,
+    batchSize: 1,
+    fileSizeKb: 15000,
+    testDurationSec: 60,
+    incrementBatchSize: 0,
+    incrementFileSizeKb: 5000
+  }
 };
-executePushTest(generatorConfig, (config) => {
-  // Increase load.
-  config.batchSize = config.batchSize * 2;
+
+var generatorConfig = generatorConfigs[size];
+if (!generatorConfig) {
+  console.log('Size ' + size + ' does not exist.');
+  process.exit(1);
+}
+generatorConfig.processorName = cmd + '-data-generator';
+
+
+getClusterSummary(nifiApiP, (err, clusterSummary) => {
+  if (err) {
+    console.log('Failed to get clusterSummary', err);
+    return;
+  }
+  generatorConfig.clusterSummary = clusterSummary.clusterSummary;
+  executePushTest(generatorConfig, (config) => {
+    // Increase load.
+    config.batchSize += generatorConfig.incrementBatchSize;
+    config.fileSizeKb += generatorConfig.incrementFileSizeKb;
+  });
 });
