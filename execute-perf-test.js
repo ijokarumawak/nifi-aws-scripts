@@ -1,24 +1,31 @@
 var fs = require('fs');
 var path = require('path');
 var request = require('request');
+var yaml = require('js-yaml');
 var debug = false;
 
 var showUsage = function() {
-  console.log('node execute-perf-test.js <cmd:push/pull> <size:S/L>');
+  console.log('node execute-perf-test.js <env> <cmd:push/pull> <size:S/L>');
   process.exit(1);
 }
 
-if (process.argv.length < 4) showUsage();
+if (process.argv.length < 5) showUsage();
 
-var cmd = process.argv[2];
-var size = process.argv[3];
+var env = process.argv[2];
+var cmd = process.argv[3];
+var size = process.argv[4];
 
+function resolvePath(__path) {
+  if (typeof(__path) === 'string') {
+    return path.resolve(__dirname, __path);
+  }
+  return null;
+}
 
-function NiFiApi(http, https, certFile) {
-  this.isSecure = false;
-  this.cert = path.resolve(__dirname, certFile);
+function NiFiApi(conf) {
+  this.cert = resolvePath(conf.certFile);
   this.getApiRoot = function() {
-    return this.isSecure ? https : http;
+    return conf.secure ? conf.api.secure : conf.api.plain;
   }
   this.request = function(options, callback) {
 
@@ -35,7 +42,7 @@ function NiFiApi(http, https, certFile) {
       o.url = this.getApiRoot() + options.url;
     }
 
-    o.ca = fs.readFileSync(this.cert);
+    if (this.cert) o.ca = fs.readFileSync(this.cert);
 
     request(o, callback);
   }
@@ -45,20 +52,23 @@ function NiFiApi(http, https, certFile) {
  * Environment dependent values.
  */
 
-var clientCertFile = path.resolve(__dirname, 'keys/koji.aws.mine.crt');
-var clientKeyFile = path.resolve(__dirname, 'keys/koji.aws.mine.pem');
+var envConf;
+try {
+  var envFile = fs.readFileSync(resolvePath('perf-test-config/env-' + env + '.yml'));
+  envConf = yaml.safeLoad(envFile);
+} catch (e) {
+  console.log('Failed to load an env file', e);
+  process.exit(1);
+}
 
-var nifiApiP = new NiFiApi(
-    'http://0.p.nifi.aws.mine:8080/nifi-api',
-    'https://0.p.nifi.aws.mine:8443/nifi-api',
-    'keys/0.p.nifi.aws.mine.crt');
-nifiApiP.isSecure = true;
+console.log('envConf', envConf);
 
-var nifiApiQ = new NiFiApi(
-    'http://0.q.nifi.aws.mine:8080/nifi-api',
-    'https://0.q.nifi.aws.mine:8443/nifi-api',
-    'keys/0.q.nifi.aws.mine.crt');
-nifiApiQ.isSecure = true;
+var nifiApiP = new NiFiApi(envConf.nifiP);
+var nifiApiQ = new NiFiApi(envConf.nifiQ);
+
+
+var clientCertFile = resolvePath(envConf.clientCertFile);
+var clientKeyFile = resolvePath(envConf.clientKeyFile);
 
 /*
  * Define common functions.
@@ -69,8 +79,8 @@ request = request.defaults({
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   },
-  cert: fs.readFileSync(clientCertFile),
-  key: fs.readFileSync(clientKeyFile)
+  cert: (clientCertFile ? fs.readFileSync(clientCertFile) : null),
+  key: (clientKeyFile ? fs.readFileSync(clientKeyFile) : null)
 });
 
 var getProcessorIdByName = function(nifiApi, name, callback) {
@@ -80,7 +90,11 @@ var getProcessorIdByName = function(nifiApi, name, callback) {
       return;
     }
     if (res.statusCode == 200) {
-      callback(null, JSON.parse(body).searchResultsDTO.processorResults[0].id);
+      var results = JSON.parse(body).searchResultsDTO.processorResults;
+      if (results.length == 0) {
+        return callback({msg: 'No processor was found with name "' + name + '" within ' + nifiApi.getApiRoot()});
+      }
+      callback(null, results[0].id);
     } else {
       callback(res);
     }
@@ -219,13 +233,21 @@ var executePushTest = function(generatorConfig, increaseLoad) {
   var expectedThroughputKb = flowFilesPerSec * generatorConfig.fileSizeKb;
   var start = new Date();
   var testDurationSec = generatorConfig.testDurationSec;
+  // TODO: Checking queued flow-file count is not an ideal way to measure performance,
+  //       I should use component stats which can be retrieved via REST api as:
+  //       curl http://localhost:8080/nifi-api/remote-process-groups/c00eca0c-0156-1000-9d69-e30201d97753 |jq .status.aggregateSnapshot
   // Allow keeping up to average incoming flow-files per sec for 10 sec.
   // If queued flow-file count exceeds this, test will terminate.
   var expectedSecToBeTransferred = cmd == 'push' ? 10 : 30;
   var maxAllowedQueuedFlowFilesCount = Math.floor(flowFilesPerSec * expectedSecToBeTransferred) * generatorConfig.clusterSummary.connectedNodeCount;
   
-  console.log('Stopping generator.');
+  console.log('Stopping generator.', generatorConfig.processorName);
   getProcessorIdByName(nifiApiP, generatorConfig.processorName, (err, processorId) => {
+
+    if (err) {
+      console.log('Failed to find generator processor.', err);
+      return;
+    }
   
     var generatorId = processorId;
   
