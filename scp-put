@@ -1,0 +1,13 @@
+#!/bin/sh
+
+instance_name=$1
+local_file=$2
+remote_file=$3
+
+if [ -z $instance_name ] || [ -z $local_file ] || [ -z $remote_file ]
+then
+  echo "usage: scp-put <instance_name> <local-file> <remote-file>"
+  exit 1
+fi
+
+scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${local_file} ec2-user@${instance_name}.aws.mine:${remote_file}
