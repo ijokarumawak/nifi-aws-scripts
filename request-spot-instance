@@ -42,6 +42,6 @@ aws ec2 request-spot-instances \
  --launch-specification file://spot-request-specifications/${service_name}.json \
  --availability-zone-group "us-west-1c" \
  --instance-count ${instance_count} \
- --spot-price "0.025" \
+ --spot-price "0.03" \
  |jq -r .SpotInstanceRequests[].SpotInstanceRequestId > spot-requests/${service_name}
 
