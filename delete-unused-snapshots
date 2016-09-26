@@ -1,0 +1,27 @@
+#!/bin/sh
+
+usage="delete-unused-snapshot <region> <owner-id>"
+
+region=$1
+owner_id=$2
+
+if [ -z $region ] || [ -z $owner_id ]
+then
+  echo $usage
+  exit 1
+fi
+
+for snapshot_id in `aws ec2 describe-snapshots\
+  --region $region \
+  --owner-ids $owner_id \
+  |jq -rc '.Snapshots[] | select(.Description | contains("Created by CreateImage")) |.SnapshotId'`
+do
+  c=$(aws ec2 describe-images --region $region \
+    --owners $owner_id \
+    --filters "Name=block-device-mapping.snapshot-id,Values=$snapshot_id" |jq .Images[].Name |wc -l)
+  if [ $c == 0 ]
+  then
+    echo "delete $snapshot_id ..."
+    aws ec2 delete-snapshot --region $region --snapshot-id $snapshot_id
+  fi
+done
