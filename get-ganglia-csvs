@@ -1,0 +1,21 @@
+#!/bin/sh
+
+hostname=$1
+cstart=$2
+cend=$3
+outDirRoot=$4
+
+if [ -z $hostname ] || [ -z $cstart ] || [ -z $cend ] || [ -z $outDirRoot ]
+then
+  echo "usage: get-ganglia-csvs <hostname> <start> <end> <outDirRoot>"
+  echo "<start> and <end> should be yyyyMMddHHmm format."
+  exit 1
+fi
+
+outDir="$outDirRoot/$hostname/$cstart-$cend"
+mkdir -p $outDir
+
+for graph in load_report cpu_report mem_report network_report
+do
+  ./get-ganglia-csv $hostname $graph $cstart $cend > "$outDir/$graph.csv"
+done

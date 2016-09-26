@@ -1,0 +1,24 @@
+#!/bin/sh
+
+hostname=$1
+graph=$2
+cstart=$3
+cend=$4
+
+if [ -z $hostname ] || [ -z $graph ] || [ -z $cstart ] || [ -z $cend ]
+then
+  echo "usage: get-ganglia-csv <hostname> <graph> <start> <end>"
+  echo "<start> and <end> should be yyyyMMddHHmm format."
+  exit 1
+fi
+
+# Target environment is Mac OS
+regex='s/^([[:digit:]]{4})([[:digit:]]{2})([[:digit:]]{2})([[:digit:]]{2})([[:digit:]]{2}).*$/\2%2F\3%2F\1%20\4%3A\5/'
+
+cs=$(echo $cstart | sed -E $regex)
+ce=$(echo $cend | sed -E $regex)
+
+URL="http://0.master.aws.mine/ganglia/graph.php?g=${graph}&h=${hostname}.aws.mine&c=aws.mine&cs=${cs}&ce=${ce}&csv=1"
+# echo $URL
+
+curl -s $URL
