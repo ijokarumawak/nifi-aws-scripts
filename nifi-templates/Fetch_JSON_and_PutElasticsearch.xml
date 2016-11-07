@@ -1,0 +1,500 @@
+<?xml version="1.0" ?>
+<template encoding-version="1.0">
+  <description></description>
+  <groupId>2f1c8f7c-0158-1000-adec-92ddd533ba72</groupId>
+  <name>Fetch_JSON_and_PutElasticsearch</name>
+  <snippet>
+    <processGroups>
+      <id>3d3d6519-0158-1000-0000-000000000000</id>
+      <parentGroupId>2f1c8f7c-0158-1000-0000-000000000000</parentGroupId>
+      <position>
+        <x>0.0</x>
+        <y>0.0</y>
+      </position>
+      <comments></comments>
+      <contents>
+        <connections>
+          <id>3d1d9645-0158-1000-0000-000000000000</id>
+          <parentGroupId>3d3d6519-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <destination>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d15b9dc-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>1</labelIndex>
+          <name></name>
+          <selectedRelationships>success</selectedRelationships>
+          <source>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d1d77b8-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <connections>
+          <id>3d1ea28b-0158-1000-0000-000000000000</id>
+          <parentGroupId>3d3d6519-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <destination>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d1d77b8-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>1</labelIndex>
+          <name></name>
+          <selectedRelationships>success</selectedRelationships>
+          <source>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d1e4790-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <connections>
+          <id>3d1f44ae-0158-1000-0000-000000000000</id>
+          <parentGroupId>3d3d6519-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <destination>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d1f1e56-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>1</labelIndex>
+          <name></name>
+          <selectedRelationships>failure</selectedRelationships>
+          <source>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d15b9dc-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <connections>
+          <id>3d1f63cc-0158-1000-0000-000000000000</id>
+          <parentGroupId>3d3d6519-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <bends>
+            <x>948.22900390625</x>
+            <y>592.5205078125</y>
+          </bends>
+          <destination>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d1f1e56-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>1</labelIndex>
+          <name></name>
+          <selectedRelationships>retry</selectedRelationships>
+          <source>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d15b9dc-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <connections>
+          <id>3d1f7842-0158-1000-0000-000000000000</id>
+          <parentGroupId>3d3d6519-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <bends>
+            <x>1348.22900390625</x>
+            <y>592.5205078125</y>
+          </bends>
+          <destination>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d1f1e56-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>1</labelIndex>
+          <name></name>
+          <selectedRelationships>success</selectedRelationships>
+          <source>
+            <groupId>3d3d6519-0158-1000-0000-000000000000</groupId>
+            <id>3d15b9dc-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <processors>
+          <id>3d15b9dc-0158-1000-0000-000000000000</id>
+          <parentGroupId>3d3d6519-0158-1000-0000-000000000000</parentGroupId>
+          <position>
+            <x>965.22900390625</x>
+            <y>407.5205078125</y>
+          </position>
+          <config>
+            <bulletinLevel>WARN</bulletinLevel>
+            <comments></comments>
+            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+            <descriptors>
+              <entry>
+                <key>elasticsearch-http-url</key>
+                <value>
+                  <name>elasticsearch-http-url</name>
+                </value>
+              </entry>
+              <entry>
+                <key>SSL Context Service</key>
+                <value>
+                  <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
+                  <name>SSL Context Service</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Username</key>
+                <value>
+                  <name>Username</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Password</key>
+                <value>
+                  <name>Password</name>
+                </value>
+              </entry>
+              <entry>
+                <key>elasticsearch-http-connect-timeout</key>
+                <value>
+                  <name>elasticsearch-http-connect-timeout</name>
+                </value>
+              </entry>
+              <entry>
+                <key>elasticsearch-http-response-timeout</key>
+                <value>
+                  <name>elasticsearch-http-response-timeout</name>
+                </value>
+              </entry>
+              <entry>
+                <key>put-es-id-attr</key>
+                <value>
+                  <name>put-es-id-attr</name>
+                </value>
+              </entry>
+              <entry>
+                <key>put-es-index</key>
+                <value>
+                  <name>put-es-index</name>
+                </value>
+              </entry>
+              <entry>
+                <key>put-es-type</key>
+                <value>
+                  <name>put-es-type</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Character Set</key>
+                <value>
+                  <name>Character Set</name>
+                </value>
+              </entry>
+              <entry>
+                <key>put-es-batch-size</key>
+                <value>
+                  <name>put-es-batch-size</name>
+                </value>
+              </entry>
+              <entry>
+                <key>put-es-index-op</key>
+                <value>
+                  <name>put-es-index-op</name>
+                </value>
+              </entry>
+            </descriptors>
+            <lossTolerant>false</lossTolerant>
+            <penaltyDuration>30 sec</penaltyDuration>
+            <properties>
+              <entry>
+                <key>elasticsearch-http-url</key>
+                <value>http://192.168.99.100:9201</value>
+              </entry>
+              <entry>
+                <key>SSL Context Service</key>
+              </entry>
+              <entry>
+                <key>Username</key>
+              </entry>
+              <entry>
+                <key>Password</key>
+              </entry>
+              <entry>
+                <key>elasticsearch-http-connect-timeout</key>
+                <value>5 secs</value>
+              </entry>
+              <entry>
+                <key>elasticsearch-http-response-timeout</key>
+                <value>15 secs</value>
+              </entry>
+              <entry>
+                <key>put-es-id-attr</key>
+                <value>filename</value>
+              </entry>
+              <entry>
+                <key>put-es-index</key>
+                <value>github</value>
+              </entry>
+              <entry>
+                <key>put-es-type</key>
+                <value>commit</value>
+              </entry>
+              <entry>
+                <key>Character Set</key>
+                <value>UTF-8</value>
+              </entry>
+              <entry>
+                <key>put-es-batch-size</key>
+                <value>100</value>
+              </entry>
+              <entry>
+                <key>put-es-index-op</key>
+                <value>update</value>
+              </entry>
+            </properties>
+            <runDurationMillis>0</runDurationMillis>
+            <schedulingPeriod>0 sec</schedulingPeriod>
+            <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+            <yieldDuration>1 sec</yieldDuration>
+          </config>
+          <name>PutElasticsearchHttp</name>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>failure</name>
+          </relationships>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>retry</name>
+          </relationships>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>success</name>
+          </relationships>
+          <style></style>
+          <type>org.apache.nifi.processors.elasticsearch.PutElasticsearchHttp</type>
+        </processors>
+        <processors>
+          <id>3d1d77b8-0158-1000-0000-000000000000</id>
+          <parentGroupId>3d3d6519-0158-1000-0000-000000000000</parentGroupId>
+          <position>
+            <x>964.2289428710938</x>
+            <y>196.5205078125</y>
+          </position>
+          <config>
+            <bulletinLevel>WARN</bulletinLevel>
+            <comments></comments>
+            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+            <descriptors>
+              <entry>
+                <key>File to Fetch</key>
+                <value>
+                  <name>File to Fetch</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Completion Strategy</key>
+                <value>
+                  <name>Completion Strategy</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Move Destination Directory</key>
+                <value>
+                  <name>Move Destination Directory</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Move Conflict Strategy</key>
+                <value>
+                  <name>Move Conflict Strategy</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Log level when file not found</key>
+                <value>
+                  <name>Log level when file not found</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Log level when permission denied</key>
+                <value>
+                  <name>Log level when permission denied</name>
+                </value>
+              </entry>
+            </descriptors>
+            <lossTolerant>false</lossTolerant>
+            <penaltyDuration>30 sec</penaltyDuration>
+            <properties>
+              <entry>
+                <key>File to Fetch</key>
+                <value>/tmp/sample.json</value>
+              </entry>
+              <entry>
+                <key>Completion Strategy</key>
+                <value>None</value>
+              </entry>
+              <entry>
+                <key>Move Destination Directory</key>
+              </entry>
+              <entry>
+                <key>Move Conflict Strategy</key>
+                <value>Rename</value>
+              </entry>
+              <entry>
+                <key>Log level when file not found</key>
+                <value>ERROR</value>
+              </entry>
+              <entry>
+                <key>Log level when permission denied</key>
+                <value>ERROR</value>
+              </entry>
+            </properties>
+            <runDurationMillis>0</runDurationMillis>
+            <schedulingPeriod>0 sec</schedulingPeriod>
+            <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+            <yieldDuration>1 sec</yieldDuration>
+          </config>
+          <name>FetchFile</name>
+          <relationships>
+            <autoTerminate>true</autoTerminate>
+            <name>failure</name>
+          </relationships>
+          <relationships>
+            <autoTerminate>true</autoTerminate>
+            <name>not.found</name>
+          </relationships>
+          <relationships>
+            <autoTerminate>true</autoTerminate>
+            <name>permission.denied</name>
+          </relationships>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>success</name>
+          </relationships>
+          <style></style>
+          <type>org.apache.nifi.processors.standard.FetchFile</type>
+        </processors>
+        <processors>
+          <id>3d1e4790-0158-1000-0000-000000000000</id>
+          <parentGroupId>3d3d6519-0158-1000-0000-000000000000</parentGroupId>
+          <position>
+            <x>970.2289428710938</x>
+            <y>15.5205078125</y>
+          </position>
+          <config>
+            <bulletinLevel>WARN</bulletinLevel>
+            <comments></comments>
+            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+            <descriptors>
+              <entry>
+                <key>File Size</key>
+                <value>
+                  <name>File Size</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Batch Size</key>
+                <value>
+                  <name>Batch Size</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Data Format</key>
+                <value>
+                  <name>Data Format</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Unique FlowFiles</key>
+                <value>
+                  <name>Unique FlowFiles</name>
+                </value>
+              </entry>
+            </descriptors>
+            <lossTolerant>false</lossTolerant>
+            <penaltyDuration>30 sec</penaltyDuration>
+            <properties>
+              <entry>
+                <key>File Size</key>
+                <value>1b</value>
+              </entry>
+              <entry>
+                <key>Batch Size</key>
+                <value>1</value>
+              </entry>
+              <entry>
+                <key>Data Format</key>
+                <value>Binary</value>
+              </entry>
+              <entry>
+                <key>Unique FlowFiles</key>
+                <value>false</value>
+              </entry>
+            </properties>
+            <runDurationMillis>0</runDurationMillis>
+            <schedulingPeriod>1 h</schedulingPeriod>
+            <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+            <yieldDuration>1 sec</yieldDuration>
+          </config>
+          <name>GenerateFlowFile</name>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>success</name>
+          </relationships>
+          <style></style>
+          <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
+        </processors>
+        <processors>
+          <id>3d1f1e56-0158-1000-0000-000000000000</id>
+          <parentGroupId>3d3d6519-0158-1000-0000-000000000000</parentGroupId>
+          <position>
+            <x>981.22900390625</x>
+            <y>647.5205078125</y>
+          </position>
+          <config>
+            <bulletinLevel>WARN</bulletinLevel>
+            <comments></comments>
+            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+            <descriptors>
+              <entry>
+                <key>Delete Attributes Expression</key>
+                <value>
+                  <name>Delete Attributes Expression</name>
+                </value>
+              </entry>
+            </descriptors>
+            <lossTolerant>false</lossTolerant>
+            <penaltyDuration>30 sec</penaltyDuration>
+            <properties>
+              <entry>
+                <key>Delete Attributes Expression</key>
+              </entry>
+            </properties>
+            <runDurationMillis>0</runDurationMillis>
+            <schedulingPeriod>0 sec</schedulingPeriod>
+            <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+            <yieldDuration>1 sec</yieldDuration>
+          </config>
+          <name>UpdateAttribute</name>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>success</name>
+          </relationships>
+          <style></style>
+          <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
+        </processors>
+      </contents>
+      <name>PutElasticsearch</name>
+    </processGroups>
+  </snippet>
+  <timestamp>11/07/2016 14:23:57 JST</timestamp>
+</template>
