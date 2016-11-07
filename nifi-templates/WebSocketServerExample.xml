@@ -1,0 +1,494 @@
+<?xml version="1.0" ?>
+<template encoding-version="1.0">
+  <description></description>
+  <groupId>2f1c8f7c-0158-1000-adec-92ddd533ba72</groupId>
+  <name>WebSocketServerExample</name>
+  <snippet>
+    <processGroups>
+      <id>2f97d520-0158-1000-0000-000000000000</id>
+      <parentGroupId>2f1c8f7c-0158-1000-0000-000000000000</parentGroupId>
+      <position>
+        <x>0.0</x>
+        <y>0.0</y>
+      </position>
+      <comments></comments>
+      <contents>
+        <connections>
+          <id>01581000-c014-1f91-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <bends>
+            <x>160.0555468172646</x>
+            <y>428.56402587890625</y>
+          </bends>
+          <destination>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>01581000-980f-1f8b-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>1</labelIndex>
+          <name></name>
+          <selectedRelationships>success</selectedRelationships>
+          <source>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>01581000-87ab-1f8f-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <connections>
+          <id>01581000-f2ea-1f90-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <bends>
+            <x>745.096653994999</x>
+            <y>592.69775390625</y>
+          </bends>
+          <destination>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>01581000-5c86-1f8c-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>1</labelIndex>
+          <name></name>
+          <selectedRelationships>failure</selectedRelationships>
+          <source>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>01581000-980f-1f8b-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <connections>
+          <id>01581001-87ab-1f8f-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <bends>
+            <x>162.0694628328896</x>
+            <y>590.6838684082031</y>
+          </bends>
+          <destination>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>01581000-5c86-1f8c-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>1</labelIndex>
+          <name></name>
+          <selectedRelationships>success</selectedRelationships>
+          <source>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>01581000-980f-1f8b-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <connections>
+          <id>01581001-c014-1f91-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <bends>
+            <x>161.0</x>
+            <y>278.0</y>
+          </bends>
+          <destination>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>01581000-87ab-1f8f-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>0</labelIndex>
+          <name></name>
+          <selectedRelationships>connected</selectedRelationships>
+          <source>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>2f996cf2-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <connections>
+          <id>01581002-c014-1f91-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+          <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+          <bends>
+            <x>746.0</x>
+            <y>278.0</y>
+          </bends>
+          <destination>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>01581000-87ab-1f8f-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </destination>
+          <flowFileExpiration>0 sec</flowFileExpiration>
+          <labelIndex>0</labelIndex>
+          <name></name>
+          <selectedRelationships>text message</selectedRelationships>
+          <source>
+            <groupId>2f97d520-0158-1000-0000-000000000000</groupId>
+            <id>2f996cf2-0158-1000-0000-000000000000</id>
+            <type>PROCESSOR</type>
+          </source>
+          <zIndex>0</zIndex>
+        </connections>
+        <controllerServices>
+          <id>2f982de3-0158-1000-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <comments></comments>
+          <descriptors>
+            <entry>
+              <key>Input Buffer Size</key>
+              <value>
+                <name>Input Buffer Size</name>
+              </value>
+            </entry>
+            <entry>
+              <key>Max Text Message Size</key>
+              <value>
+                <name>Max Text Message Size</name>
+              </value>
+            </entry>
+            <entry>
+              <key>Max Binary Message Size</key>
+              <value>
+                <name>Max Binary Message Size</name>
+              </value>
+            </entry>
+            <entry>
+              <key>Listen Port</key>
+              <value>
+                <name>Listen Port</name>
+              </value>
+            </entry>
+            <entry>
+              <key>SSL Context Service</key>
+              <value>
+                <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
+                <name>SSL Context Service</name>
+              </value>
+            </entry>
+            <entry>
+              <key>Client Authentication</key>
+              <value>
+                <name>Client Authentication</name>
+              </value>
+            </entry>
+          </descriptors>
+          <name>NiFi WebSocket Server</name>
+          <properties>
+            <entry>
+              <key>Input Buffer Size</key>
+              <value>4 kb</value>
+            </entry>
+            <entry>
+              <key>Max Text Message Size</key>
+              <value>64 kb</value>
+            </entry>
+            <entry>
+              <key>Max Binary Message Size</key>
+              <value>64 kb</value>
+            </entry>
+            <entry>
+              <key>Listen Port</key>
+              <value>9001</value>
+            </entry>
+            <entry>
+              <key>SSL Context Service</key>
+            </entry>
+            <entry>
+              <key>Client Authentication</key>
+              <value>No Authentication</value>
+            </entry>
+          </properties>
+          <state>ENABLED</state>
+          <type>org.apache.nifi.websocket.jetty.JettyWebSocketServer</type>
+        </controllerServices>
+        <processors>
+          <id>01581000-5c86-1f8c-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <position>
+            <x>277.25120770273253</x>
+            <y>589.795301796959</y>
+          </position>
+          <config>
+            <bulletinLevel>WARN</bulletinLevel>
+            <comments></comments>
+            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+            <descriptors>
+              <entry>
+                <key>Delete Attributes Expression</key>
+                <value>
+                  <name>Delete Attributes Expression</name>
+                </value>
+              </entry>
+            </descriptors>
+            <lossTolerant>false</lossTolerant>
+            <penaltyDuration>30 sec</penaltyDuration>
+            <properties>
+              <entry>
+                <key>Delete Attributes Expression</key>
+              </entry>
+            </properties>
+            <runDurationMillis>0</runDurationMillis>
+            <schedulingPeriod>0 sec</schedulingPeriod>
+            <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+            <yieldDuration>1 sec</yieldDuration>
+          </config>
+          <name>UpdateAttribute</name>
+          <relationships>
+            <autoTerminate>true</autoTerminate>
+            <name>success</name>
+          </relationships>
+          <style></style>
+          <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
+        </processors>
+        <processors>
+          <id>01581000-87ab-1f8f-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <position>
+            <x>276.1304112614823</x>
+            <y>296.43915230370425</y>
+          </position>
+          <config>
+            <bulletinLevel>WARN</bulletinLevel>
+            <comments></comments>
+            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+            <descriptors>
+              <entry>
+                <key>Regular Expression</key>
+                <value>
+                  <name>Regular Expression</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Replacement Value</key>
+                <value>
+                  <name>Replacement Value</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Character Set</key>
+                <value>
+                  <name>Character Set</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Maximum Buffer Size</key>
+                <value>
+                  <name>Maximum Buffer Size</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Replacement Strategy</key>
+                <value>
+                  <name>Replacement Strategy</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Evaluation Mode</key>
+                <value>
+                  <name>Evaluation Mode</name>
+                </value>
+              </entry>
+            </descriptors>
+            <lossTolerant>false</lossTolerant>
+            <penaltyDuration>30 sec</penaltyDuration>
+            <properties>
+              <entry>
+                <key>Regular Expression</key>
+                <value>(?s)(^.*$)</value>
+              </entry>
+              <entry>
+                <key>Replacement Value</key>
+                <value>Hello, this is NiFi!</value>
+              </entry>
+              <entry>
+                <key>Character Set</key>
+                <value>UTF-8</value>
+              </entry>
+              <entry>
+                <key>Maximum Buffer Size</key>
+                <value>1 MB</value>
+              </entry>
+              <entry>
+                <key>Replacement Strategy</key>
+                <value>Prepend</value>
+              </entry>
+              <entry>
+                <key>Evaluation Mode</key>
+                <value>Entire text</value>
+              </entry>
+            </properties>
+            <runDurationMillis>0</runDurationMillis>
+            <schedulingPeriod>0 sec</schedulingPeriod>
+            <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+            <yieldDuration>1 sec</yieldDuration>
+          </config>
+          <name>ReplaceText</name>
+          <relationships>
+            <autoTerminate>true</autoTerminate>
+            <name>failure</name>
+          </relationships>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>success</name>
+          </relationships>
+          <style></style>
+          <type>org.apache.nifi.processors.standard.ReplaceText</type>
+        </processors>
+        <processors>
+          <id>01581000-980f-1f8b-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <position>
+            <x>276.5377964916078</x>
+            <y>445.26283858799604</y>
+          </position>
+          <config>
+            <bulletinLevel>WARN</bulletinLevel>
+            <comments></comments>
+            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+            <descriptors>
+              <entry>
+                <key>WebSocket Session Id</key>
+                <value>
+                  <name>WebSocket Session Id</name>
+                </value>
+              </entry>
+              <entry>
+                <key>WebSocket ControllerService Id</key>
+                <value>
+                  <name>WebSocket ControllerService Id</name>
+                </value>
+              </entry>
+              <entry>
+                <key>WebSocket Endpoint Id</key>
+                <value>
+                  <name>WebSocket Endpoint Id</name>
+                </value>
+              </entry>
+              <entry>
+                <key>WebSocket Message Type</key>
+                <value>
+                  <name>WebSocket Message Type</name>
+                </value>
+              </entry>
+            </descriptors>
+            <lossTolerant>false</lossTolerant>
+            <penaltyDuration>30 sec</penaltyDuration>
+            <properties>
+              <entry>
+                <key>WebSocket Session Id</key>
+                <value>${websocket.session.id}</value>
+              </entry>
+              <entry>
+                <key>WebSocket ControllerService Id</key>
+                <value>${websocket.controller.service.id}</value>
+              </entry>
+              <entry>
+                <key>WebSocket Endpoint Id</key>
+                <value>${websocket.endpoint.id}</value>
+              </entry>
+              <entry>
+                <key>WebSocket Message Type</key>
+                <value>TEXT</value>
+              </entry>
+            </properties>
+            <runDurationMillis>0</runDurationMillis>
+            <schedulingPeriod>3 sec</schedulingPeriod>
+            <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+            <yieldDuration>1 sec</yieldDuration>
+          </config>
+          <name>PutWebSocket</name>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>failure</name>
+          </relationships>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>success</name>
+          </relationships>
+          <style></style>
+          <type>org.apache.nifi.processors.websocket.PutWebSocket</type>
+        </processors>
+        <processors>
+          <id>2f996cf2-0158-1000-0000-000000000000</id>
+          <parentGroupId>2f97d520-0158-1000-0000-000000000000</parentGroupId>
+          <position>
+            <x>275.9999965987109</x>
+            <y>137.00000363415896</y>
+          </position>
+          <config>
+            <bulletinLevel>WARN</bulletinLevel>
+            <comments></comments>
+            <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+            <descriptors>
+              <entry>
+                <key>Max Queue Size</key>
+                <value>
+                  <name>Max Queue Size</name>
+                </value>
+              </entry>
+              <entry>
+                <key>WebSocket Server Controller Service</key>
+                <value>
+                  <identifiesControllerService>org.apache.nifi.websocket.WebSocketServerService</identifiesControllerService>
+                  <name>WebSocket Server Controller Service</name>
+                </value>
+              </entry>
+              <entry>
+                <key>Server URL Path</key>
+                <value>
+                  <name>Server URL Path</name>
+                </value>
+              </entry>
+            </descriptors>
+            <lossTolerant>false</lossTolerant>
+            <penaltyDuration>30 sec</penaltyDuration>
+            <properties>
+              <entry>
+                <key>Max Queue Size</key>
+                <value>10000</value>
+              </entry>
+              <entry>
+                <key>WebSocket Server Controller Service</key>
+                <value>2f982de3-0158-1000-0000-000000000000</value>
+              </entry>
+              <entry>
+                <key>Server URL Path</key>
+                <value>/server-demo</value>
+              </entry>
+            </properties>
+            <runDurationMillis>0</runDurationMillis>
+            <schedulingPeriod>0 sec</schedulingPeriod>
+            <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+            <yieldDuration>1 sec</yieldDuration>
+          </config>
+          <name>ListenWebSocket</name>
+          <relationships>
+            <autoTerminate>true</autoTerminate>
+            <name>binary message</name>
+          </relationships>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>connected</name>
+          </relationships>
+          <relationships>
+            <autoTerminate>false</autoTerminate>
+            <name>text message</name>
+          </relationships>
+          <style></style>
+          <type>org.apache.nifi.processors.websocket.ListenWebSocket</type>
+        </processors>
+      </contents>
+      <name>WebSocketServerExample</name>
+    </processGroups>
+  </snippet>
+  <timestamp>11/07/2016 14:15:34 JST</timestamp>
+</template>
